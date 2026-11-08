@@ -1,0 +1,38 @@
+/* All colors live here. Palette from the owner; light is the default theme.
+   The owner's "#3F0EA" has 5 digits (invalid): #3F0EAA is a placeholder, used only for focus rings. */
+:root {
+  --ink: #242424;
+  --stone: #8d8a84;
+  --accent: #3f0eaa;
+  --sand: #c3a78e;
+  --umber: #7a4f3a;
+
+  --bg: color-mix(in srgb, var(--sand) 9%, white);
+  --surface: color-mix(in srgb, var(--sand) 20%, white);
+  --raised: white;
+  --card: color-mix(in srgb, var(--sand) 32%, white);
+  --text: var(--ink);
+  --muted: color-mix(in srgb, var(--stone) 50%, var(--ink));
+  --line: color-mix(in srgb, var(--sand) 45%, white);
+  --link: var(--accent);
+
+  --v-supported: #3f6b3a;
+  --v-outdated: #9a6516;
+  --v-contradicted: #a2402c;
+  --v-unverifiable: #6f6d68;
+}
+.dark {
+  --bg: var(--ink);
+  --surface: color-mix(in srgb, var(--ink) 90%, var(--sand));
+  --raised: color-mix(in srgb, var(--ink) 80%, var(--sand));
+  --card: color-mix(in srgb, var(--ink) 86%, var(--sand));
+  --text: color-mix(in srgb, var(--sand) 18%, white);
+  --muted: color-mix(in srgb, var(--stone) 75%, white);
+  --line: color-mix(in srgb, var(--ink) 75%, var(--sand));
+  --link: color-mix(in srgb, var(--accent) 40%, white);
+
+  --v-supported: #8fb88a;
+  --v-outdated: #d9a24e;
+  --v-contradicted: #e0907c;
+  --v-unverifiable: var(--stone);
+}

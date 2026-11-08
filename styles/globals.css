@@ -1,0 +1,113 @@
+/* Base styles and the few gentle animations the site uses. */
+@import "./tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { background: var(--bg); color: var(--text); }
+  h1, h2, h3 { font-family: var(--font-display), sans-serif; }
+  body { font-family: var(--font-body), sans-serif; -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 6px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@view-transition { navigation: auto; }
+
+/* Heading: the verdict word rotates forever, one every 3 seconds */
+.cycle { display: inline-grid; vertical-align: bottom; overflow: hidden; padding-bottom: .15em; margin-bottom: -.15em; }
+.cycle > span { grid-area: 1 / 1; color: var(--v); opacity: 0; animation: cycle 12s cubic-bezier(.16,1,.3,1) infinite; }
+@keyframes cycle {
+  0% { opacity: 0; transform: translateY(45%); }
+  4%, 22% { opacity: 1; transform: none; }
+  26%, 100% { opacity: 0; transform: translateY(-45%); }
+}
+
+/* A claim marked on the page */
+.claim {
+  background-image: linear-gradient(color-mix(in srgb, var(--v) 20%, transparent), color-mix(in srgb, var(--v) 20%, transparent));
+  background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 100%;
+  border-bottom: 2px solid var(--v);
+  animation: sweep 700ms cubic-bezier(.2,.8,.2,1) forwards; animation-delay: var(--d, 0ms);
+}
+@keyframes sweep { to { background-size: 100% 100%; } }
+
+/* Live check sequence: timed by --d, Replay remounts it */
+.word  { display: inline-block; white-space: pre; animation: word 500ms ease-out both; animation-delay: var(--d, 0ms); }
+.stamp { animation: stamp 600ms ease-out both; animation-delay: var(--d, 0ms); }
+.clip  { animation: clip 900ms cubic-bezier(.65,0,.15,1) both; animation-delay: var(--d, 0ms); }
+@keyframes word  { from { opacity: 0; transform: translateY(.3em); } }
+@keyframes stamp { from { opacity: 0; transform: translateX(-10px); } }
+@keyframes clip  { from { clip-path: inset(0 100% 0 0); opacity: .2; } }
+
+/* Gentle fade-up as sections scroll into view */
+@supports (animation-timeline: view()) {
+  .scrub { animation: scrub linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+  @keyframes scrub { from { opacity: 0; transform: translateY(1rem); } }
+}
+
+/* Cursor-lit button surface */
+.spot { position: relative; overflow: hidden; isolation: isolate; }
+.spot::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 300ms;
+  background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), var(--spot, transparent), transparent 70%);
+}
+.spot:hover::before { opacity: 1; }
+
+.defer { content-visibility: auto; contain-intrinsic-size: auto 400px; }
+
+/* Line above each step: a pen stroke that keeps travelling along it */
+.flow { display: block; position: relative; height: 2px; overflow: hidden; background: var(--line); }
+.flow::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 40%; background: var(--umber); animation: flow 3.2s cubic-bezier(.65,0,.35,1) infinite; animation-delay: var(--d, 0s); }
+.dark .flow::after { background: var(--sand); }
+@keyframes flow { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow::after { animation: none; width: 100%; }
+  .word, .stamp, .clip, .scrub, .claim { animation: none !important; }
+  .claim { background-size: 100% 100%; }
+  .cycle > span { animation: none; }
+  .cycle > span:first-child { opacity: 1; }
+}
+
+/* ---------- header, footer, burger ---------- */
+.drop { animation: drop 700ms cubic-bezier(.16,1,.3,1) both; }
+@keyframes drop { from { opacity: 0; transform: translateY(-1.5rem); } }
+@keyframes bob { 50% { transform: translateY(-4px); } }
+
+.navlink { position: relative; color: var(--muted); transition: color 200ms; }
+.navlink::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--umber);
+  transform: scaleX(0); transform-origin: left; transition: transform 300ms cubic-bezier(.16,1,.3,1);
+}
+.dark .navlink::after { background: var(--sand); }
+.navlink:hover { color: var(--text); }
+.navlink:hover::after { transform: scaleX(1); }
+
+/* three bars that turn into a cross */
+.burger { position: relative; width: 2.25rem; height: 2.25rem; border-radius: .75rem; border: 1px solid var(--line); }
+.burger span {
+  position: absolute; left: 50%; top: 50%; width: 1.1rem; height: 2px; margin: -1px 0 0 -.55rem; border-radius: 2px;
+  background: currentColor; transition: transform 350ms cubic-bezier(.65,0,.35,1), opacity 200ms;
+}
+.burger span:nth-child(1) { transform: translateY(-6px); }
+.burger span:nth-child(3) { transform: translateY(6px); }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: rotate(-45deg); }
+
+@media (prefers-reduced-motion: reduce) { .drop { animation: none; } .burger span, .navlink::after { transition: none; } }
+
+/* ---------- login/signup: vertical lines with a segment sliding up and down ---------- */
+.vline { position: absolute; top: 12%; bottom: 12%; width: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.vline::after {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 30%; background: var(--umber);
+  animation: vline 3.4s ease-in-out infinite alternate; animation-delay: var(--d, 0s);
+}
+.dark .vline::after { background: var(--sand); }
+@keyframes vline { to { transform: translateY(233%); } }
+@media (prefers-reduced-motion: reduce) { .vline::after { animation: none; height: 100%; } }
+
+/* ---------- side notes: both drift up and down together ---------- */
+.drift { display: inline-block; animation: drift 8s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translateY(-18vh); } to { transform: translateY(18vh); } }
+@media (prefers-reduced-motion: reduce) { .drift { animation: none; } }
