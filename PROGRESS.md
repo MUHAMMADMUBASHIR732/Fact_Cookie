@@ -6,10 +6,10 @@ Do `npm install`, then `npm run lint && npx tsc --noEmit && npm run build` and f
 - [~] 1. Project, folders, fonts, tokens.css, Tailwind, light/dark (written: package.json, styles/*, tailwind.config.ts, app/layout.tsx, hooks/useTheme.ts)
 - [~] 2. VerdictBadge, ThemeToggle, SpotlightLink done; Button, Input, Card, Modal, Tabs, Toast, Skeleton, Table todo
 - [ ] 3. Intro animation and page transitions
-- [~] 4. Marketing layout done (SiteHeader w/ animated burger, SiteFooter, BackToTop); landing done; pricing preview todo
+- [~] 4. Landing done (hero, two tickers, features, connect card, steps, problems, FAQ, CTA); pricing preview todo
 - [ ] 5. Pricing
 - [~] 6. Auth: login + signup done (demo accounts, wrong-email and wrong-password messages, password rules, Google button via lib/api/auth.ts); reset + connect-login todo
-- [~] 7. Mock data + /lib/api (data/types.ts, data/acme.ts, lib/api/index.ts done; app layout/sidebar todo)
+- [~] 7. Types, mock data, real API client + auth (lib/api); app shell todo
 - [ ] 8. Dashboard overview
 - [ ] 9. Verification history
 - [ ] 10. Verification detail

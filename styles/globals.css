@@ -49,7 +49,7 @@
 .spot { position: relative; overflow: hidden; isolation: isolate; }
 .spot::before {
   content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 300ms;
-  background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), var(--spot, transparent), transparent 70%);
+  background: radial-gradient(circle 170px at var(--mx, 50%) var(--my, 50%), var(--spot, transparent), transparent 70%);
 }
 .spot:hover::before { opacity: 1; }
 
@@ -107,7 +107,29 @@
 @keyframes vline { to { transform: translateY(233%); } }
 @media (prefers-reduced-motion: reduce) { .vline::after { animation: none; height: 100%; } }
 
-/* ---------- side notes: both drift up and down together ---------- */
-.drift { display: inline-block; animation: drift 8s ease-in-out infinite alternate; }
-@keyframes drift { from { transform: translateY(-18vh); } to { transform: translateY(18vh); } }
-@media (prefers-reduced-motion: reduce) { .drift { animation: none; } }
+/* ---------- side notes: one scrolls up, the other scrolls down, forever ---------- */
+.marquee-up   { animation: marquee 38s linear infinite; }
+.marquee-down { animation: marquee 38s linear infinite reverse; }
+@keyframes marquee { to { transform: translateY(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-up, .marquee-down { animation: none; } }
+
+/* ---------- more continuous text motion ---------- */
+.hmarquee { animation: hmarquee 32s linear infinite; }
+.hmarquee:hover { animation-play-state: paused; }
+@keyframes hmarquee { to { transform: translateX(-50%); } }
+
+/* slow light sweeping through the closing heading */
+.shine {
+  background-image: linear-gradient(100deg, var(--text) 35%, var(--umber) 50%, var(--text) 65%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 6s linear infinite;
+}
+.dark .shine { background-image: linear-gradient(100deg, var(--text) 35%, var(--sand) 50%, var(--text) 65%); }
+@keyframes shine { to { background-position: -250% 0; } }
+
+/* live dot with a ring that keeps spreading */
+.pulse-dot { width: .5rem; height: .5rem; border-radius: 9999px; background: var(--v-supported); animation: ping 2s ease-out infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--v-supported) 55%, transparent); } 100% { box-shadow: 0 0 0 .6rem transparent; } }
+@media (prefers-reduced-motion: reduce) { .hmarquee, .shine, .pulse-dot { animation: none; } }
+
+.hmarquee-rev { animation-direction: reverse; }

@@ -10,13 +10,13 @@ import { SideNote } from "@/components/SideNote";
 import { login, loginWithGoogle, signup, type AuthResult } from "@/lib/api/auth";
 import { passwordIsStrong } from "@/lib/utils/password";
 
-const sideLine = "Check every AI answer against a real source.";
+const sideLine = "Check every AI answer against a real source, so a stale fact never slips through.";
 const field = "mt-1.5 w-full rounded-xl border border-line bg-raised px-4 py-3 text-[0.95rem] font-normal outline-none transition focus:border-umber";
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const isSignup = mode === "signup";
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [notice, setNotice] = useState<"no-account" | "exists" | null>(null);
+  const [notice, setNotice] = useState<Extract<AuthResult, { ok: false }> | null>(null);
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [doneText, setDoneText] = useState("");
@@ -24,8 +24,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   function handle(result: AuthResult, success: string) {
     setBusy(false);
     if (result.ok) return setDoneText(success);
-    if (result.reason === "wrong-password") return setErrors({ password: "Incorrect password. Try again." });
-    setNotice(result.reason);
+    setNotice(result);
   }
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -41,12 +40,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     setNotice(null);
     if (Object.keys(next).length) return;
     setBusy(true);
-    handle(await (isSignup ? signup(email, password) : login(email, password)), isSignup ? "Account created (demo)." : "Logged in (demo).");
+    handle(await (isSignup ? signup(email, password, String(data.get("name"))) : login(email, password)), isSignup ? "Account created." : "Logged in.");
   }
 
   async function google() {
     setBusy(true);
-    handle(await loginWithGoogle(), "Signed in with Google (demo).");
+    handle(await loginWithGoogle(), "Signed in with Google.");
   }
 
   return (
@@ -72,7 +71,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           <p className="mt-1 text-sm text-muted">{isSignup ? "Free plan, no card needed." : "Log in to see your checks."}</p>
 
           {doneText ? (
-            <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} The backend will take over from here.</p>
+            <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Your dashboard opens here once that page is built.</p>
           ) : (
             <>
               <button type="button" onClick={google} disabled={busy}
@@ -101,10 +100,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
                 {notice && (
                   <p role="alert" className="rounded-xl border border-contradicted bg-surface p-3 text-sm">
-                    {notice === "no-account" ? "We couldn't find an account with this email. " : "An account with this email already exists. "}
-                    <Link href={notice === "no-account" ? "/signup" : "/login"} className="font-medium underline underline-offset-4">
-                      {notice === "no-account" ? "Create an account" : "Log in instead"}
-                    </Link>
+                    {notice.reason === "exists" && "An account with this email already exists. "}
+                    {notice.reason === "invalid-credentials" && "Incorrect email or password. "}
+                    {notice.reason === "other" && notice.message}
+                    {notice.reason !== "other" && (
+                      <Link href={notice.reason === "exists" ? "/login" : "/signup"} className="font-medium underline underline-offset-4">
+                        {notice.reason === "exists" ? "Log in instead" : "New here? Create an account"}
+                      </Link>
+                    )}
                   </p>
                 )}
                 <button disabled={busy} className="w-full rounded-full bg-umber py-3 font-medium text-white transition hover:brightness-110 disabled:opacity-60">

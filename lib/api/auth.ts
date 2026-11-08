@@ -1,38 +1,31 @@
-// Mock auth for the demo. Backend dev: replace each function body with a fetch() to FastAPI, keep the result shape.
-// Demo accounts live in this browser only, and passwords are stored as SHA-256 hashes.
-export type AuthResult = { ok: true } | { ok: false; reason: "no-account" | "wrong-password" | "exists" };
+// Real auth calls (FRONTEND_INTEGRATION.md). The backend returns one 401 for any bad login, so we cannot tell
+// "no account" from "wrong password" unless the backend adds separate codes.
+import { api, ApiError, saveTokens } from "./client";
 
-const KEY = "fact-cookie-demo-users";
-const wait = () => new Promise((r) => setTimeout(r, 600));
+export type AuthResult =
+  | { ok: true }
+  | { ok: false; reason: "invalid-credentials" | "exists" | "other"; message?: string };
+type Tokens = { access_token: string; refresh_token: string };
 
-async function hash(text: string) {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(bytes)).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-function readUsers(): Record<string, string> {
-  try { return JSON.parse(localStorage.getItem(KEY) ?? "{}"); } catch { return {}; }
-}
-
-export async function login(email: string, password: string): Promise<AuthResult> {
-  await wait();
-  const stored = readUsers()[email.toLowerCase()];
-  if (!stored) return { ok: false, reason: "no-account" };
-  if (stored !== (await hash(password))) return { ok: false, reason: "wrong-password" };
-  return { ok: true };
-}
-
-export async function signup(email: string, password: string): Promise<AuthResult> {
-  await wait();
-  const users = readUsers();
-  const key = email.toLowerCase();
-  if (key in users) return { ok: false, reason: "exists" };
-  users[key] = await hash(password);
-  try { localStorage.setItem(KEY, JSON.stringify(users)); } catch { /* storage blocked: demo only */ }
-  return { ok: true };
+async function authenticate(path: string, body: object): Promise<AuthResult> {
+  try {
+    saveTokens(await api<Tokens>(path, { method: "POST", body: JSON.stringify(body) }));
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ApiError) {
+      if (e.status === 401) return { ok: false, reason: "invalid-credentials" };
+      if (e.status === 409) return { ok: false, reason: "exists" };
+      return { ok: false, reason: "other", message: e.message };
+    }
+    return { ok: false, reason: "other", message: "Can't reach the server. Is the backend running?" };
+  }
 }
 
-// Real version: redirect to the backend's Google OAuth start URL.
+export const login = (email: string, password: string) => authenticate("/api/v1/auth/login", { email, password });
+export const signup = (email: string, password: string, name: string) =>
+  authenticate("/api/v1/auth/register", { email, password, name });
+
+// The backend has no Google endpoint yet, so be honest instead of pretending.
 export async function loginWithGoogle(): Promise<AuthResult> {
-  await wait();
-  return { ok: true };
+  return { ok: false, reason: "other", message: "Google sign-in isn't available yet." };
 }
