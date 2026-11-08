@@ -8,7 +8,7 @@ Do `npm install`, then `npm run lint && npx tsc --noEmit && npm run build` and f
 - [ ] 3. Intro animation and page transitions
 - [~] 4. Landing done (hero, two tickers, features, connect card, steps, problems, FAQ, CTA); pricing preview todo
 - [ ] 5. Pricing
-- [~] 6. Auth: login + signup done (demo accounts, wrong-email and wrong-password messages, password rules, Google button via lib/api/auth.ts); reset + connect-login todo
+- [~] 6. Auth: login + signup redesigned (back button, icon fields, show/hide, strength bar, staggered entrance); reset + connect-login todo
 - [~] 7. Types, mock data, real API client + auth (lib/api); app shell todo
 - [ ] 8. Dashboard overview
 - [ ] 9. Verification history

@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { BarChart3, ChevronDown, Clock3, FileSearch, FileUp, Hash, History, Plug, Quote, ScrollText, SlidersHorizontal } from "lucide-react";
 import { CopyField } from "@/components/landing/CopyField";
 import { IconCard } from "@/components/landing/IconCard";
+import { Typewriter } from "@/components/landing/Typewriter";
 import { Ticker } from "@/components/landing/Ticker";
 import { ProofSheet } from "@/components/ProofSheet";
 import { SpotlightLink } from "@/components/ui/SpotlightLink";
@@ -34,10 +35,10 @@ const problems = [
   [ScrollText, "No audit trail", "Every check is saved, so you can show where a statement came from."],
 ] as const;
 const faqs = [
-  ["Which AI tools does it work with?", "Claude, ChatGPT, opencode and other agents that support MCP connectors."],
-  ["What happens when no source is found?", "The claim is marked Unverifiable and left as it was. Nothing is guessed."],
-  ["Can I use my own documents?", "Yes. Upload PDF, text or Markdown files and they are searched as private evidence."],
-  ["Can I keep a record of a check?", "Yes. Every verification is saved and can be exported as JSON or CSV."],
+  ["Which AI tools does it work with?", "Fact Cookie connects through MCP, so it works with Claude, ChatGPT, opencode and any other agent that supports MCP connectors. You add the connector name and URL once, log in with your account, and from then on you can ask the agent to verify an answer. If an agent can't log in through the browser, you can use an API key instead."],
+  ["What happens when no source is found?", "The claim is marked Unverifiable and left exactly as it was, with a short note. Fact Cookie never invents evidence to fill a gap, and it never gives a verdict without a source behind it. You can then check that claim by hand, or upload a document that covers it and run the check again."],
+  ["Can I use my own documents?", "Yes. Upload PDF, text or Markdown files and they are searched as private evidence next to live web pages, down to the page or section. Verdicts that rely on your documents show where in the file the evidence was found, and you can delete a document whenever you like."],
+  ["Can I keep a record of a check?", "Yes. Every verification is saved to your history with the original answer, the verdict for each claim, the evidence and the corrected answer. You can search and filter the history, and export any check as JSON or CSV, which gives your team an audit trail for AI-assisted statements."],
 ];
 
 export default function Landing() {
@@ -49,14 +50,14 @@ export default function Landing() {
             <span className="pulse-dot" aria-hidden /> Works with Claude, ChatGPT and opencode
           </p>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.15] tracking-tight sm:text-5xl">
-            Find out if your AI’s answer is{" "}
+            <Typewriter text="Find out if your AI’s answer is" />{" "}
             <span className="cycle" aria-label="supported, outdated, contradicted or unverifiable">
               {verdictWords.map((w, i) => (
-                <span key={w} aria-hidden style={{ "--v": `var(--v-${w})`, animationDelay: `${i * 3}s` } as CSSProperties}>{w}</span>
+                <span key={w} aria-hidden style={{ "--v": `var(--v-${w})`, animationDelay: `${i * 3 + 2.2}s` } as CSSProperties}>{w}</span>
               ))}
             </span>.
           </h1>
-          <p className="mt-5 max-w-md text-lg leading-relaxed text-muted">
+          <p className="slide-in mt-5 max-w-md text-lg leading-relaxed text-muted">
             Add Fact Cookie to your AI agent. Every answer you verify comes back with a verdict for each claim,
             the exact source, and a corrected version.
           </p>
@@ -70,7 +71,7 @@ export default function Landing() {
           </div>
           <dl className="mt-9 grid grid-cols-3 gap-6 border-t border-line pt-7">
             {stats.map(([n, label]) => (
-              <div key={label}>
+              <div key={label} className="hover-shadow rounded-2xl p-3 hover:bg-raised">
                 <dt className="font-display text-4xl font-semibold text-umber dark:text-sand">{n}</dt>
                 <dd className="mt-1 text-sm leading-snug text-muted">{label}</dd>
               </div>
@@ -105,7 +106,7 @@ export default function Landing() {
               ))}
             </ol>
           </div>
-          <div className="scrub space-y-5 rounded-3xl border border-line bg-card p-6">
+          <div className="scrub hover-shadow space-y-5 rounded-3xl border border-line bg-card p-6">
             <CopyField label="Connector name" value="Fact Cookie" />
             <CopyField label="Connector URL" value={mcpUrl} />
           </div>
@@ -116,7 +117,7 @@ export default function Landing() {
         <h2 className="text-3xl font-semibold tracking-tight">How it works</h2>
         <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map(([title, text], i) => (
-            <li key={title} className="scrub">
+            <li key={title} className="scrub hover-shadow rounded-2xl p-5 hover:bg-raised">
               <span className="flow" aria-hidden style={{ "--d": `${i * 0.5}s` } as CSSProperties} />
               <span className="mt-4 block text-sm font-medium text-muted">Step {i + 1}</span>
               <h3 className="mt-1 text-lg font-semibold">{title}</h3>
@@ -137,7 +138,7 @@ export default function Landing() {
         <h2 className="text-3xl font-semibold tracking-tight">Questions</h2>
         <div className="mt-6 max-w-3xl">
           {faqs.map(([q, a]) => (
-            <details key={q} className="group border-b border-line py-5">
+            <details key={q} className="group hover-shadow rounded-xl border-b border-line px-4 py-5 hover:bg-raised">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-semibold [&::-webkit-details-marker]:hidden">
                 {q}<ChevronDown size={20} aria-hidden className="shrink-0 text-muted transition-transform duration-300 group-open:rotate-180" />
               </summary>
@@ -147,7 +148,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="defer mb-12 rounded-3xl bg-surface px-8 py-12 text-center">
+      <section className="defer hover-shadow mb-12 rounded-3xl bg-surface px-8 py-12 text-center">
         <h2 className="shine text-4xl font-semibold tracking-tight sm:text-5xl">Verify. Discover. Trust.</h2>
         <p className="mx-auto mt-3 max-w-md text-muted">Connect it to your AI in a couple of minutes.</p>
         <div className="mt-7 flex justify-center"><SpotlightLink href="/signup">Create free account</SpotlightLink></div>

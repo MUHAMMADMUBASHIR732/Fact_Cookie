@@ -133,3 +133,23 @@
 @media (prefers-reduced-motion: reduce) { .hmarquee, .shine, .pulse-dot { animation: none; } }
 
 .hmarquee-rev { animation-direction: reverse; }
+
+/* ---------- typewriter caret, slide-in, form entrance, hover shadow, floating logo ---------- */
+.caret { display: inline-block; width: 3px; height: .9em; margin-left: 3px; vertical-align: -.08em; background: var(--umber); animation: blink 900ms steps(2) infinite; }
+.dark .caret { background: var(--sand); }
+@keyframes blink { 50% { opacity: 0; } }
+
+.slide-in { animation: slide-in 900ms cubic-bezier(.16,1,.3,1) 500ms both; }
+@keyframes slide-in { from { opacity: 0; transform: translateX(-2.5rem); } }
+
+.rise { animation: rise 650ms cubic-bezier(.16,1,.3,1) both; animation-delay: var(--d, 0ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+.hover-shadow { transition: box-shadow 350ms ease, border-color 300ms, background-color 300ms; }
+.hover-shadow:hover {
+  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--umber) 55%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--ink) 25%, transparent);
+}
+
+.float { animation: float 5s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .slide-in, .rise, .float, .caret { animation: none; } }

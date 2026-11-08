@@ -6,7 +6,7 @@ import { useSpotlight } from "@/hooks/useSpotlight";
 export function IconCard({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
   const ref = useSpotlight<HTMLDivElement>();
   return (
-    <div ref={ref} className="spot scrub group [--spot:color-mix(in_srgb,var(--sand)_38%,transparent)] rounded-3xl border border-line bg-card p-7 transition-colors duration-300 hover:border-umber">
+    <div ref={ref} className="spot scrub group [--spot:color-mix(in_srgb,var(--sand)_38%,transparent)] rounded-3xl border border-line bg-card p-7 hover-shadow hover:border-umber">
       <span className="mb-4 grid size-11 place-items-center rounded-xl border border-[color-mix(in_srgb,var(--umber)_40%,transparent)] bg-raised text-umber transition duration-300 ease-out group-hover:-translate-y-1 group-hover:-rotate-6 group-hover:bg-umber group-hover:text-white dark:text-sand dark:group-hover:bg-sand dark:group-hover:text-ink">
         {icon}
       </span>

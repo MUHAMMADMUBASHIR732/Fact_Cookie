@@ -32,7 +32,7 @@ export function ProofSheet() {
 
   return (
     <div ref={ref}
-      className="spot rounded-3xl border border-line border-line bg-surface p-6 sm:p-8">
+      className="spot hover-shadow rounded-3xl border border-line border-line bg-surface p-6 sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <p className="max-w-md text-sm text-muted">{v.question}</p>
         <button onClick={() => setRun((n) => n + 1)} aria-label="Replay the check"

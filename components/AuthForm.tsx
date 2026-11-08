@@ -1,17 +1,21 @@
-// Sign-up / log-in form: inline validation, wrong-email and wrong-password messages, Google option.
+// Sign-up / log-in screen: info panel, back button, form card with icons, strength bar and Google option.
 "use client";
+import { ArrowLeft, ArrowRight, Lock, Mail, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, type CSSProperties, type FormEvent } from "react";
+import { AuthField } from "@/components/auth/AuthField";
 import { Brand } from "@/components/Brand";
 import { GoogleIcon } from "@/components/GoogleIcon";
 import { PasswordRules } from "@/components/PasswordRules";
 import { SideNote } from "@/components/SideNote";
+import { VerdictBadge } from "@/components/ui/VerdictBadge";
 import { login, loginWithGoogle, signup, type AuthResult } from "@/lib/api/auth";
 import { passwordIsStrong } from "@/lib/utils/password";
 
 const sideLine = "Check every AI answer against a real source, so a stale fact never slips through.";
-const field = "mt-1.5 w-full rounded-xl border border-line bg-raised px-4 py-3 text-[0.95rem] font-normal outline-none transition focus:border-umber";
+const verdicts = ["supported", "outdated", "contradicted", "unverifiable"] as const;
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const isSignup = mode === "signup";
@@ -52,12 +56,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     <main className="grid min-h-screen lg:grid-cols-2">
       <SideNote side="left">{sideLine}</SideNote>
       <SideNote side="right">{sideLine}</SideNote>
+
       <aside className="hidden flex-col justify-between bg-surface p-12 lg:flex">
         <Brand />
         <div>
-          <Image src="/logo-mark.png" alt="" width={144} height={144} className="rounded-[28%] border border-line" />
+          <Image src="/logo-mark.png" alt="" width={144} height={144} className="float rounded-[28%] border border-line" />
           <p className="mt-8 font-display text-4xl font-semibold leading-tight tracking-tight">Verify. Discover. Trust.</p>
           <p className="mt-3 max-w-sm text-muted">Every claim in an AI answer, checked against a real source.</p>
+          <div className="mt-6 flex flex-wrap gap-2">{verdicts.map((v) => <VerdictBadge key={v} verdict={v} />)}</div>
         </div>
         <p className="text-sm text-muted">Unverifiable claims are flagged, never guessed.</p>
       </aside>
@@ -66,57 +72,55 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <span aria-hidden className="vline hidden md:block" style={{ left: "calc(50% - 15rem)" }} />
         <span aria-hidden className="vline hidden md:block" style={{ left: "calc(50% + 15rem)", "--d": "-1.7s" } as CSSProperties} />
         <div className="w-full max-w-sm">
-          <div className="lg:hidden"><Brand /></div>
-          <h1 className="mt-10 text-2xl font-semibold tracking-tight lg:mt-0">{isSignup ? "Create your account" : "Welcome back"}</h1>
-          <p className="mt-1 text-sm text-muted">{isSignup ? "Free plan, no card needed." : "Log in to see your checks."}</p>
+          <Link href="/" className="group mb-6 inline-flex items-center gap-2 text-sm text-muted transition hover:text-text">
+            <ArrowLeft size={16} aria-hidden className="transition-transform duration-300 group-hover:-translate-x-1" /> Back to home
+          </Link>
 
-          {doneText ? (
-            <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Your dashboard opens here once that page is built.</p>
-          ) : (
-            <>
-              <button type="button" onClick={google} disabled={busy}
-                className="mt-8 flex w-full items-center justify-center gap-3 rounded-full border border-line bg-raised py-3 text-[0.95rem] font-medium transition hover:border-umber disabled:opacity-60">
-                <GoogleIcon /> Continue with Google
-              </button>
-              <p className="my-5 flex items-center gap-3 text-xs text-muted before:h-px before:flex-1 before:bg-[var(--line)] after:h-px after:flex-1 after:bg-[var(--line)]">or use your email</p>
+          <div className="rise rounded-3xl border border-line bg-raised p-7 shadow-[0_30px_60px_-30px_color-mix(in_srgb,var(--umber)_45%,transparent)]">
+            <div className="mb-6 lg:hidden"><Brand /></div>
+            <h1 className="rise text-2xl font-semibold tracking-tight" style={delay(80)}>{isSignup ? "Create your account" : "Welcome back"}</h1>
+            <p className="rise mt-1 text-sm text-muted" style={delay(140)}>{isSignup ? "Start checking AI answers in a minute." : "Log in to see your checks."}</p>
 
-              <form onSubmit={submit} noValidate className="space-y-4">
-                {isSignup && (
-                  <label className="block text-sm font-medium">Name
-                    <input name="name" autoComplete="name" aria-invalid={!!errors.name} className={field} />
-                    {errors.name && <Error text={errors.name} />}
-                  </label>
-                )}
-                <label className="block text-sm font-medium">Email
-                  <input name="email" type="email" autoComplete="email" aria-invalid={!!errors.email} className={field} />
-                  {errors.email && <Error text={errors.email} />}
-                </label>
-                <label className="block text-sm font-medium">Password
-                  <input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                    autoComplete={isSignup ? "new-password" : "current-password"} aria-invalid={!!errors.password} className={field} />
-                  {errors.password && <Error text={errors.password} />}
-                </label>
-                {isSignup && <PasswordRules value={password} />}
-
-                {notice && (
-                  <p role="alert" className="rounded-xl border border-contradicted bg-surface p-3 text-sm">
-                    {notice.reason === "exists" && "An account with this email already exists. "}
-                    {notice.reason === "invalid-credentials" && "Incorrect email or password. "}
-                    {notice.reason === "other" && notice.message}
-                    {notice.reason !== "other" && (
-                      <Link href={notice.reason === "exists" ? "/login" : "/signup"} className="font-medium underline underline-offset-4">
-                        {notice.reason === "exists" ? "Log in instead" : "New here? Create an account"}
-                      </Link>
-                    )}
-                  </p>
-                )}
-                <button disabled={busy} className="w-full rounded-full bg-umber py-3 font-medium text-white transition hover:brightness-110 disabled:opacity-60">
-                  {busy ? "Please wait..." : isSignup ? "Create account" : "Log in"}
+            {doneText ? (
+              <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Your dashboard opens here once that page is built.</p>
+            ) : (
+              <>
+                <button type="button" onClick={google} disabled={busy} style={delay(200)}
+                  className="rise mt-7 flex w-full items-center justify-center gap-3 rounded-full border border-line bg-bg py-3 text-[0.95rem] font-medium transition hover:border-umber hover:shadow-md disabled:opacity-60">
+                  <GoogleIcon /> Continue with Google
                 </button>
-              </form>
-            </>
-          )}
-          <p className="mt-6 text-sm text-muted">
+                <p className="my-5 flex items-center gap-3 text-xs text-muted before:h-px before:flex-1 before:bg-[var(--line)] after:h-px after:flex-1 after:bg-[var(--line)]">or use your email</p>
+
+                <form onSubmit={submit} noValidate className="space-y-4">
+                  {isSignup && <AuthField name="name" label="Name" icon={User} autoComplete="name" error={errors.name} delay={240} />}
+                  <AuthField name="email" label="Email" icon={Mail} type="email" autoComplete="email" error={errors.email} delay={300} />
+                  <AuthField name="password" label="Password" icon={Lock} type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                    autoComplete={isSignup ? "new-password" : "current-password"} error={errors.password} delay={360} />
+                  {isSignup && <PasswordRules value={password} />}
+
+                  {notice && (
+                    <p role="alert" className="rounded-xl border border-contradicted bg-surface p-3 text-sm">
+                      {notice.reason === "exists" && "An account with this email already exists. "}
+                      {notice.reason === "invalid-credentials" && "Incorrect email or password. "}
+                      {notice.reason === "other" && notice.message}
+                      {notice.reason !== "other" && (
+                        <Link href={notice.reason === "exists" ? "/login" : "/signup"} className="font-medium underline underline-offset-4">
+                          {notice.reason === "exists" ? "Log in instead" : "New here? Create an account"}
+                        </Link>
+                      )}
+                    </p>
+                  )}
+                  <button disabled={busy} style={delay(420)}
+                    className="rise group flex w-full items-center justify-center gap-2 rounded-full bg-umber py-3.5 font-medium text-white transition hover:brightness-110 hover:shadow-lg disabled:opacity-60">
+                    {busy ? "Please wait..." : isSignup ? "Create account" : "Log in"}
+                    {!busy && <ArrowRight size={17} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+
+          <p className="mt-6 text-center text-sm text-muted">
             {isSignup ? "Already have an account? " : "New here? "}
             <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-text underline underline-offset-4">
               {isSignup ? "Log in" : "Create an account"}
@@ -126,8 +130,4 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       </div>
     </main>
   );
-}
-
-function Error({ text }: { text: string }) {
-  return <span role="alert" className="mt-1 block text-xs font-normal text-contradicted">{text}</span>;
 }
