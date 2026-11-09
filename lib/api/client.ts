@@ -1,5 +1,6 @@
 // The one fetch wrapper for the Fact Cookie backend: base URL, bearer token, one refresh retry, error envelope.
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+import { API_URL as BASE } from "@/lib/config";
+
 const ACCESS = "fc_access_token";
 const REFRESH = "fc_refresh_token";
 
@@ -11,6 +12,8 @@ export function saveTokens(t: { access_token: string; refresh_token: string }) {
   localStorage.setItem(ACCESS, t.access_token);
   localStorage.setItem(REFRESH, t.refresh_token);
 }
+export const hasToken = () => !!localStorage.getItem(ACCESS);
+export const getRefreshToken = () => localStorage.getItem(REFRESH);
 export function clearTokens() {
   localStorage.removeItem(ACCESS);
   localStorage.removeItem(REFRESH);

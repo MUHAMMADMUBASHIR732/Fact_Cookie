@@ -1,5 +1,6 @@
 // Shapes the backend will return. Keep in sync with the FastAPI/FastMCP result.
-export type Verdict = "supported" | "outdated" | "contradicted" | "unverifiable";
+import type { Verdict } from "@/lib/api/types";
+export type { Verdict };
 
 export interface Claim {
   id: string;

@@ -1,6 +1,7 @@
 // Landing page: hero, ticker, features, steps, problems, FAQ, closing call to action.
 import type { CSSProperties } from "react";
 import { BarChart3, ChevronDown, Clock3, FileSearch, FileUp, Hash, History, Plug, Quote, ScrollText, SlidersHorizontal } from "lucide-react";
+import { API_URL } from "@/lib/config";
 import { CopyField } from "@/components/landing/CopyField";
 import { IconCard } from "@/components/landing/IconCard";
 import { Typewriter } from "@/components/landing/Typewriter";
@@ -12,7 +13,7 @@ import { VerdictBadge } from "@/components/ui/VerdictBadge";
 const verdictWords = ["supported", "outdated", "contradicted", "unverifiable"] as const;
 const claimTypes = ["Numbers", "Dates", "Names", "Quotes", "Citations", "Prices", "Statistics", "Office-holders", "Policies"];
 const evidence = ["$4.2 billion", "13,400 employees", "p. 41", "31 December 2024", "Annual Report 2024", "Financial Highlights", "Company Facts"];
-const mcpUrl = `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/mcp`;
+const mcpUrl = `${API_URL}/mcp`;
 const stats = [["4", "verdicts for every claim"], ["5", "kinds of claim checked"], ["3+", "AI agents supported"]];
 const steps = [
   ["Your AI answers", "Ask Claude, ChatGPT or opencode as you always do."],

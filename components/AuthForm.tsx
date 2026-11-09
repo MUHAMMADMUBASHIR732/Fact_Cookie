@@ -3,6 +3,7 @@
 import { ArrowLeft, ArrowRight, Lock, Mail, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type CSSProperties, type FormEvent } from "react";
 import { AuthField } from "@/components/auth/AuthField";
 import { Brand } from "@/components/Brand";
@@ -19,6 +20,7 @@ const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const isSignup = mode === "signup";
+  const router = useRouter();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState<Extract<AuthResult, { ok: false }> | null>(null);
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   function handle(result: AuthResult, success: string) {
     setBusy(false);
-    if (result.ok) return setDoneText(success);
+    if (result.ok) { setDoneText(success); return router.push("/try"); }
     setNotice(result);
   }
 
@@ -82,7 +84,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             <p className="rise mt-1 text-sm text-muted" style={delay(140)}>{isSignup ? "Start checking AI answers in a minute." : "Log in to see your checks."}</p>
 
             {doneText ? (
-              <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Your dashboard opens here once that page is built.</p>
+              <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Taking you to the verifier...</p>
             ) : (
               <>
                 <button type="button" onClick={google} disabled={busy} style={delay(200)}

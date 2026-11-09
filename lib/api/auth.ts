@@ -1,6 +1,6 @@
 // Real auth calls (FRONTEND_INTEGRATION.md). The backend returns one 401 for any bad login, so we cannot tell
 // "no account" from "wrong password" unless the backend adds separate codes.
-import { api, ApiError, saveTokens } from "./client";
+import { api, ApiError, clearTokens, getRefreshToken, saveTokens } from "./client";
 
 export type AuthResult =
   | { ok: true }
@@ -28,4 +28,11 @@ export const signup = (email: string, password: string, name: string) =>
 // The backend has no Google endpoint yet, so be honest instead of pretending.
 export async function loginWithGoogle(): Promise<AuthResult> {
   return { ok: false, reason: "other", message: "Google sign-in isn't available yet." };
+}
+
+export async function logout() {
+  const refresh_token = getRefreshToken();
+  try { if (refresh_token) await api("/api/v1/auth/logout", { method: "POST", body: JSON.stringify({ refresh_token }) }); }
+  catch { /* signing out locally is enough if the server call fails */ }
+  clearTokens();
 }

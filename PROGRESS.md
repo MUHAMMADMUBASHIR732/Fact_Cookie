@@ -9,11 +9,11 @@ Do `npm install`, then `npm run lint && npx tsc --noEmit && npm run build` and f
 - [~] 4. Landing done (hero, two tickers, features, connect card, steps, problems, FAQ, CTA); pricing preview todo
 - [ ] 5. Pricing
 - [~] 6. Auth: login + signup redesigned (back button, icon fields, show/hide, strength bar, staggered entrance); reset + connect-login todo
-- [~] 7. Types, mock data, real API client + auth (lib/api); app shell todo
+- [~] 7. Real API layer done: lib/config.ts (env), client, auth, verifications, account (usage, billing, prefs, keys, docs, insights). App shell todo
 - [ ] 8. Dashboard overview
 - [ ] 9. Verification history
 - [ ] 10. Verification detail
-- [ ] 11. Try it (playground)
+- [~] 11. Try it: Playground + ClaimCard wired to the real backend (sync + async polling). Needs real-backend test
 - [ ] 12. Onboarding / Connect guide
 - [ ] 13. API keys and connector
 - [ ] 14. Documents
