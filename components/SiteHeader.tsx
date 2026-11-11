@@ -6,7 +6,7 @@ import { Brand } from "@/components/Brand";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useScrollY } from "@/hooks/useScrollY";
 
-const links = [["How it works", "#how"], ["Problems", "#problems"], ["Log in", "/login"]];
+const links = [["How it works", "/#how"], ["Pricing", "/pricing"], ["Docs", "/docs"], ["Connect", "/connect"], ["Log in", "/login"]];
 const lifted = "border-line bg-raised shadow-[0_10px_30px_-14px_color-mix(in_srgb,var(--ink)_40%,transparent)]";
 
 export function SiteHeader() {
@@ -21,7 +21,7 @@ export function SiteHeader() {
 
   return (
     <header className="drop sticky top-0 z-40 px-4 pt-3">
-      <div className={`mx-auto max-w-4xl rounded-3xl border transition-all duration-500 ${scrolled || open ? lifted : "border-transparent"}`}>
+      <div className={`mx-auto max-w-5xl rounded-3xl border transition-all duration-500 ${scrolled || open ? lifted : "border-transparent"}`}>
         <div className="flex h-14 items-center justify-between gap-4 px-4">
           <Brand size={32} />
           <nav className="hidden items-center gap-7 text-sm md:flex" aria-label="Main">

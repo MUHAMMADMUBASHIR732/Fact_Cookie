@@ -1,38 +1,43 @@
-/* All colors live here. Palette from the owner; light is the default theme.
-   The owner's "#3F0EA" has 5 digits (invalid): #3F0EAA is a placeholder, used only for focus rings. */
+/* All colors live here. Palette: deep teal ink, slate, rose, plus the logo's cookie sand.
+   Token names are kept from the first version: --umber is now the PRIMARY action color (teal), --accent is rose (focus rings). */
 :root {
-  --ink: #242424;
-  --stone: #8d8a84;
-  --accent: #3f0eaa;
+  --ink: #1c3334;
+  --slate: #2f4454;
+  --teal: #2f6566;
+  --rose: #da7b93;
   --sand: #c3a78e;
-  --umber: #7a4f3a;
+  --stone: #8d8a84;
+  --accent: var(--rose);
+  --umber: var(--teal);
 
-  --bg: color-mix(in srgb, var(--sand) 9%, white);
+  --bg: color-mix(in srgb, var(--sand) 10%, white);
   --surface: color-mix(in srgb, var(--sand) 20%, white);
   --raised: white;
   --card: color-mix(in srgb, var(--sand) 32%, white);
   --text: var(--ink);
-  --muted: color-mix(in srgb, var(--stone) 50%, var(--ink));
+  --muted: color-mix(in srgb, var(--stone) 45%, var(--ink));
   --line: color-mix(in srgb, var(--sand) 45%, white);
-  --link: var(--accent);
+  --link: var(--teal);
 
-  --v-supported: #3f6b3a;
+  --v-supported: #2b6b52;
   --v-outdated: #9a6516;
-  --v-contradicted: #a2402c;
-  --v-unverifiable: #6f6d68;
+  --v-contradicted: #b2415b;
+  --v-unverifiable: #5b6b78;
 }
-.dark {
-  --bg: var(--ink);
+/* .band = a section that is always dark, even in the light theme */
+.dark, .band {
+  --bg: color-mix(in srgb, var(--ink) 70%, black);
   --surface: color-mix(in srgb, var(--ink) 90%, var(--sand));
-  --raised: color-mix(in srgb, var(--ink) 80%, var(--sand));
-  --card: color-mix(in srgb, var(--ink) 86%, var(--sand));
-  --text: color-mix(in srgb, var(--sand) 18%, white);
-  --muted: color-mix(in srgb, var(--stone) 75%, white);
-  --line: color-mix(in srgb, var(--ink) 75%, var(--sand));
-  --link: color-mix(in srgb, var(--accent) 40%, white);
+  --raised: color-mix(in srgb, var(--ink) 84%, var(--sand));
+  --card: color-mix(in srgb, var(--ink) 87%, var(--sand));
+  --text: color-mix(in srgb, var(--sand) 16%, white);
+  --muted: color-mix(in srgb, var(--stone) 70%, white);
+  --line: color-mix(in srgb, var(--ink) 70%, var(--sand));
+  --link: color-mix(in srgb, var(--teal) 45%, white);
+  --umber: #3f7f80;
 
-  --v-supported: #8fb88a;
-  --v-outdated: #d9a24e;
-  --v-contradicted: #e0907c;
-  --v-unverifiable: var(--stone);
+  --v-supported: #7fc4a8;
+  --v-outdated: #e0ad5c;
+  --v-contradicted: #ee8fa5;
+  --v-unverifiable: #9aa8b3;
 }

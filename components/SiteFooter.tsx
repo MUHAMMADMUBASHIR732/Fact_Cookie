@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Brand } from "@/components/Brand";
 
 const columns = [
-  ["Product", [["How it works", "/#how"], ["What goes wrong", "/#problems"]]],
+  ["Product", [["How it works", "/#how"], ["Developers", "/#developers"], ["Principles", "/#principles"], ["Pricing", "/pricing"]]],
+  ["Resources", [["Docs", "/docs"], ["Connect your agent", "/connect"], ["Playground", "/try"]]],
   ["Account", [["Log in", "/login"], ["Create account", "/signup"]]],
 ] as const;
 
@@ -12,7 +13,7 @@ export function SiteFooter() {
     <footer>
       <span className="flow mx-auto max-w-6xl" aria-hidden />
       <div className="scrub mx-auto max-w-6xl px-6 py-16">
-        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr]">
+        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div>
             <Brand />
             <p className="mt-5 max-w-xs leading-relaxed text-muted">
