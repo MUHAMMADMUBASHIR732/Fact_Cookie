@@ -35,7 +35,7 @@ export default function Docs() {
             {toc.map(([id, label]) => <li key={id}><a href={`#${id}`} className="navlink">{label}</a></li>)}
           </ul>
         </nav>
-        <div className="space-y-16">
+        <div className="min-w-0 space-y-16">
           <section id="start"><h2 className={h2}>Getting started</h2>
             <ol className="mt-5 list-decimal space-y-3 pl-5 text-muted marker:text-text">
               <li>Create an account.</li>

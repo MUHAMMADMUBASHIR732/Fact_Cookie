@@ -66,7 +66,7 @@ export default function Landing() {
       <section className="px-4 pt-3 sm:px-6">
         <div className="band mx-auto max-w-7xl rounded-[2rem] border border-line p-8 sm:p-12 lg:p-16">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
-            <div>
+            <div className="min-w-0">
               <p className="inline-flex items-center gap-2.5 rounded-full border border-line px-3.5 py-1.5 text-sm text-muted">
                 <span className="pulse-dot" aria-hidden /> Works with Claude, ChatGPT and opencode
               </p>
@@ -86,7 +86,7 @@ export default function Landing() {
                 <SpotlightLink href="#how" variant="ghost">See how it works</SpotlightLink>
               </div>
             </div>
-            <ProofSheet />
+            <div className="min-w-0"><ProofSheet /></div>
           </div>
         </div>
       </section>
@@ -122,7 +122,7 @@ export default function Landing() {
               <li>Clear error codes for limits, size and rate limiting.</li>
             </ul>
           </div>
-          <CodeWindow tabs={devTabs} />
+          <div className="min-w-0"><CodeWindow tabs={devTabs} /></div>
         </div>
       </section>
 
@@ -130,10 +130,10 @@ export default function Landing() {
         <h2 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Six rules we don’t bend</h2>
         <ol className="mt-10 border-t border-line">
           {principles.map(([title, text], i) => (
-            <li key={title} className="scrub group grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-b border-line py-7 transition-colors hover:bg-surface sm:grid-cols-[5rem_18rem_1fr_auto] sm:px-4">
+            <li key={title} className="scrub group grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-b border-line py-7 transition-colors hover:bg-surface lg:grid-cols-[5rem_18rem_1fr_auto] lg:px-4">
               <span className="font-mono text-sm text-muted">0{i + 1}</span>
-              <h3 className="font-display text-xl font-semibold transition-transform duration-500 group-hover:translate-x-2 sm:text-2xl">{title}</h3>
-              <p className="col-start-2 text-muted sm:col-start-auto">{text}</p>
+              <h3 className="font-display text-xl font-semibold transition-transform duration-500 group-hover:translate-x-2 lg:text-2xl">{title}</h3>
+              <p className="col-start-2 text-muted lg:col-start-auto">{text}</p>
               <ArrowRight aria-hidden size={20} className="text-muted opacity-0 transition duration-500 group-hover:translate-x-1 group-hover:opacity-100" />
             </li>
           ))}

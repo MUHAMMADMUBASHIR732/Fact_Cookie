@@ -20,18 +20,18 @@ export function Pipeline({ steps }: { steps: PipelineStep[] }) {
 
   return (
     <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1.15fr]">
-      <ol>
+      <ol className="min-w-0">
         {steps.map((s, i) => (
           <li key={s.title} data-i={i} ref={(el) => { refs.current[i] = el; }}
-            className={`flex min-h-[42vh] flex-col justify-center border-l-2 pl-7 transition-all duration-500 lg:min-h-[58vh] ${active === i ? "border-umber opacity-100" : "border-line opacity-45"}`}>
+            className={`flex min-w-0 flex-col justify-center border-l-2 py-8 pl-5 transition-all duration-500 sm:pl-7 lg:min-h-[58vh] lg:py-0 ${active === i ? "border-umber" : "border-line lg:opacity-45"}`}>
             <span className="text-sm font-medium text-muted">Step {i + 1}</span>
             <h3 className="mt-1 text-2xl font-semibold">{s.title}</h3>
             <p className="mt-2 max-w-md leading-relaxed text-muted">{s.text}</p>
-            <div className="mt-5 lg:hidden"><CodeWindow tabs={[{ label: s.file, code: s.code }]} /></div>
+            <div className="mt-5 min-w-0 lg:hidden"><CodeWindow tabs={[{ label: s.file, code: s.code }]} /></div>
           </li>
         ))}
       </ol>
-      <div className="sticky top-28 hidden self-start lg:block">
+      <div className="sticky top-28 hidden min-w-0 self-start lg:block">
         <CodeWindow tabs={[{ label: steps[active].file, code: steps[active].code }]} />
       </div>
     </div>

@@ -13,7 +13,7 @@ export function CodeWindow({ tabs }: { tabs: { label: string; code: string }[] }
   }
 
   return (
-    <div className="band overflow-hidden rounded-2xl border border-line shadow-[0_30px_60px_-30px_color-mix(in_srgb,var(--ink)_70%,transparent)]">
+    <div className="band w-full min-w-0 max-w-full overflow-hidden rounded-2xl border border-line shadow-[0_30px_60px_-30px_color-mix(in_srgb,var(--ink)_70%,transparent)]">
       <div className="flex items-center justify-between border-b border-line pr-2">
         <div role="tablist" className="flex overflow-x-auto">
           {tabs.map((t, i) => (
