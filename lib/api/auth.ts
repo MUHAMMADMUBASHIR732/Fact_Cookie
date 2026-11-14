@@ -37,3 +37,24 @@ export async function logout() {
   catch { /* signing out locally is enough if the server call fails */ }
   clearTokens();
 }
+
+
+export async function requestPasswordReset(email: string): Promise<AuthResult> {
+  try {
+    await api("/api/v1/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) });
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ApiError) return { ok: false, reason: "other", message: e.message };
+    return { ok: false, reason: "other", message: "Can't reach the server. Is the backend running?" };
+  }
+}
+
+export async function confirmPasswordReset(token: string, password: string): Promise<AuthResult> {
+  try {
+    await api("/api/v1/auth/reset-password", { method: "POST", body: JSON.stringify({ token, new_password: password }) });
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ApiError) return { ok: false, reason: "other", message: e.message };
+    return { ok: false, reason: "other", message: "Can't reach the server. Is the backend running?" };
+  }
+}

@@ -35,3 +35,7 @@ export const getTopClaims = <T = unknown>(limit = 10) => api<T>(`/api/v1/insight
 export const getTopDomains = <T = unknown>(limit = 10) => api<T>(`/api/v1/insights/top-domains?limit=${limit}`);
 export const getVerdictBreakdown = <T = unknown>() => api<T>("/api/v1/insights/verdict-breakdown");
 export const getTrends = <T = unknown>(days = 30) => api<T>(`/api/v1/insights/trends?days=${days}`);
+// settings page imports this name; it's the same as deleteApiKey
+export const revokeApiKey = deleteApiKey;
+
+export const getHealth = <T = unknown>() => api<T>("/health"); // check the real path
