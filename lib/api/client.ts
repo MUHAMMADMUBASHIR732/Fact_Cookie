@@ -5,7 +5,7 @@ const ACCESS = "fc_access_token";
 const REFRESH = "fc_refresh_token";
 
 export class ApiError extends Error {
-  constructor(public status: number, public code: string, message: string) { super(message); }
+  constructor(public status: number, public code: string, message: string, public requestId?: string) { super(message); }
 }
 
 export function saveTokens(t: { access_token: string; refresh_token: string }) {
@@ -42,7 +42,12 @@ export async function api<T>(path: string, init: RequestInit = {}, canRetry = tr
   if (res.status === 401 && !path.startsWith("/api/v1/auth/")) { clearTokens(); window.location.assign("/login"); }
   if (!res.ok) {
     const body = await res.json().catch(() => null);
-    throw new ApiError(res.status, body?.error?.code ?? "error", body?.error?.message ?? "Something went wrong.");
+    throw new ApiError(
+      res.status,
+      body?.error?.code ?? "error",
+      body?.error?.message ?? "Something went wrong.",
+      body?.error?.request_id ?? res.headers.get("x-request-id") ?? undefined,
+    );
   }
   return res.status === 204 ? (undefined as T) : res.json();
 }

@@ -31,3 +31,30 @@ export interface Preferences {
 export interface ApiKey { id: string; name: string; prefix: string; last_used_at: string | null; revoked_at: string | null; created_at: string; key?: string }
 export type VerdictBreakdown = Partial<Record<Verdict, number>>;
 export interface TrendPoint { date: string; count: number }
+
+export type DocumentStatus = "processing" | "ready" | "failed";
+export interface DocumentItem {
+  id: string;
+  filename: string;
+  content_type: string;
+  size_bytes: number;
+  page_count: number;
+  status: DocumentStatus;
+  created_at: string;
+}
+
+export interface OAuthParams {
+  client_id: string;
+  redirect_uri: string;
+  response_type: "code";
+  scope?: string;
+  state?: string;
+  code_challenge?: string;
+  code_challenge_method?: string;
+  resource?: string;
+}
+export interface OAuthContext {
+  client_name: string;
+  scopes: string[];
+  scope?: string;
+}

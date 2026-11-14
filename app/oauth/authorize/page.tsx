@@ -19,7 +19,7 @@ function readParams(): OAuthParams | null {
   const q = new URLSearchParams(window.location.search);
   const client_id = q.get("client_id"), redirect_uri = q.get("redirect_uri");
   if (!client_id || !redirect_uri) return null;
-  const opt = <K extends keyof OAuthParams>(k: K) => (q.get(k) ?? undefined) as OAuthParams[K];
+  const opt = <K extends keyof OAuthParams>(k: K) => (q.get(k as string) ?? undefined) as OAuthParams[K];
   return {
     client_id, redirect_uri, response_type: (q.get("response_type") ?? "code") as "code", scope: opt("scope"), state: opt("state"),
     code_challenge: opt("code_challenge"), code_challenge_method: opt("code_challenge_method"), resource: opt("resource"),
