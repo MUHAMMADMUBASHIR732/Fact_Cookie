@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSpotlight } from "@/hooks/useSpotlight";
 
 const looks = {
-  solid: "bg-umber text-white hover:brightness-110 [--spot:color-mix(in_srgb,white_25%,transparent)]",
+  solid: "bg-umber text-on-umber hover:brightness-110 [--spot:color-mix(in_srgb,white_25%,transparent)]",
   ghost: "border border-line hover:bg-surface",
 };
 

@@ -1,14 +1,11 @@
 // "Try it": paste an AI answer, verify it through the real backend, read the verdicts.
 "use client";
-import { ArrowRight, LogOut } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Brand } from "@/components/Brand";
+import { useState } from "react";
 import { ClaimCard } from "@/components/app/ClaimCard";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { VerdictBadge } from "@/components/ui/VerdictBadge";
-import { logout } from "@/lib/api/auth";
-import { ApiError, hasToken } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/client";
 import type { Verdict, Verification } from "@/lib/api/types";
 import { verify } from "@/lib/api/verifications";
 
@@ -31,7 +28,6 @@ export function Playground() {
   const [context, setContext] = useState("");
   const [state, setState] = useState<State>({ phase: "idle" });
 
-  useEffect(() => { if (!hasToken()) router.replace("/login"); }, [router]);
 
   async function run() {
     setState({ phase: "running" });
@@ -42,24 +38,11 @@ export function Playground() {
       setState({ phase: "error", message: describe(e) });
     }
   }
-  async function signOut() { await logout(); router.replace("/login"); }
 
   const busy = state.phase === "running";
   return (
-    <>
-      <header className="border-b border-line">
-        <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-6">
-          <Brand size={32} />
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <button onClick={signOut} className="inline-flex items-center gap-2 rounded-xl border border-line px-3 py-2 text-sm text-muted transition hover:text-text">
-              <LogOut size={15} aria-hidden /> Log out
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-4xl px-6 py-10">
+    <div className="max-w-4xl">
+      <div>
         <h1 className="text-3xl font-semibold tracking-tight">Try it</h1>
         <p className="mt-2 text-muted">Paste an answer from any AI and see which claims hold up.</p>
 
@@ -76,7 +59,7 @@ export function Playground() {
         </details>
 
         <button onClick={run} disabled={busy || !text.trim()}
-          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-umber px-7 py-3.5 font-medium text-white transition hover:brightness-110 hover:shadow-lg disabled:opacity-50">
+          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-umber px-7 py-3.5 font-medium text-on-umber transition hover:brightness-110 hover:shadow-lg disabled:opacity-50">
           {busy ? "Checking..." : "Verify answer"}
           {!busy && <ArrowRight size={17} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />}
         </button>
@@ -86,8 +69,8 @@ export function Playground() {
           {state.phase === "error" && <p role="alert" className="rounded-xl border border-contradicted bg-surface p-4 text-sm">{state.message}</p>}
           {state.phase === "done" && <Results result={state.result} />}
         </div>
-      </main>
-    </>
+      </div>
+    </div>
   );
 }
 

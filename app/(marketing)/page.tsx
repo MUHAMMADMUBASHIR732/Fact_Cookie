@@ -7,6 +7,8 @@ import { Ticker } from "@/components/landing/Ticker";
 import { Typewriter } from "@/components/landing/Typewriter";
 import { ProofSheet } from "@/components/ProofSheet";
 import { SpotlightLink } from "@/components/ui/SpotlightLink";
+import { VerdictBadge } from "@/components/ui/VerdictBadge";
+import type { Verdict } from "@/lib/api/types";
 import { API_URL } from "@/lib/config";
 
 const verdictWords = ["supported", "outdated", "contradicted", "unverifiable"];
@@ -65,7 +67,7 @@ export default function Landing() {
     <main>
       <section className="px-4 pt-3 sm:px-6">
         <div className="band mx-auto max-w-7xl rounded-[2rem] border border-line p-8 sm:p-12 lg:p-16">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
+          <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_1fr]">
             <div className="min-w-0">
               <p className="inline-flex items-center gap-2.5 rounded-full border border-line px-3.5 py-1.5 text-sm text-muted">
                 <span className="pulse-dot" aria-hidden /> Works with Claude, ChatGPT and opencode
@@ -76,14 +78,19 @@ export default function Landing() {
                   {verdictWords.map((w, i) => (
                     <span key={w} aria-hidden style={{ "--v": `var(--v-${w})`, animationDelay: `${i * 3 + 2.2}s` } as CSSProperties}>{w}</span>
                   ))}
-                </span>.
+                </span>
               </h1>
               <p className="slide-in mt-6 max-w-lg text-lg leading-relaxed text-muted">
                 Fact Cookie checks every number, date, name, quote and citation in an AI answer against live sources, then hands back a corrected answer with proof.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <SpotlightLink href="/signup">Get started free</SpotlightLink>
+                <SpotlightLink href="/register">Get started free</SpotlightLink>
                 <SpotlightLink href="#how" variant="ghost">See how it works</SpotlightLink>
+              </div>
+              <div className="mt-10 border-t border-line pt-6">
+                <p className="text-sm text-muted">Every claim gets one of four verdicts:</p>
+                <div className="mt-3 flex flex-wrap gap-2">{verdictWords.map((w) => <VerdictBadge key={w} verdict={w as Verdict} />)}</div>
+                <p className="mt-5 text-sm text-muted">Reads numbers, dates, names, quotes and citations, and says where each answer came from.</p>
               </div>
             </div>
             <div className="min-w-0"><ProofSheet /></div>
@@ -186,7 +193,7 @@ export default function Landing() {
           <h2 className="shine text-4xl font-semibold tracking-tight sm:text-6xl">Verify. Discover. Trust.</h2>
           <p className="mx-auto mt-4 max-w-md text-muted">Connect Fact Cookie to your AI agent in a couple of minutes.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <SpotlightLink href="/signup">Get started free</SpotlightLink>
+            <SpotlightLink href="/register">Get started free</SpotlightLink>
             <SpotlightLink href="/login" variant="ghost">Log in</SpotlightLink>
           </div>
         </div>

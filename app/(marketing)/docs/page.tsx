@@ -40,7 +40,7 @@ export default function Docs() {
             <ol className="mt-5 list-decimal space-y-3 pl-5 text-muted marker:text-text">
               <li>Create an account.</li>
               <li>Connect your agent with the <a href="/connect" className={link}>connect guide</a>.</li>
-              <li>Ask your agent to verify an answer, or paste one into the <a href="/try" className={link}>playground</a>.</li>
+              <li>Ask your agent to verify an answer, or paste one into the <a href="/verify" className={link}>playground</a>.</li>
               <li>Review every check in your history.</li>
             </ol></section>
           <section id="verdicts"><h2 className={h2}>The four verdicts</h2>

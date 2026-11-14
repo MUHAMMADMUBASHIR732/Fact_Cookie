@@ -17,7 +17,7 @@ export function PricingPlans() {
       <div role="group" aria-label="Billing period" className="mx-auto flex w-fit rounded-full border border-line p-1 text-sm">
         {[["Monthly", false], ["Yearly", true]].map(([label, value]) => (
           <button key={String(label)} aria-pressed={yearly === value} onClick={() => setYearly(value as boolean)}
-            className={`rounded-full px-5 py-2 font-medium transition-colors duration-300 ${yearly === value ? "bg-umber text-white" : "text-muted hover:text-text"}`}>{label as string}</button>
+            className={`rounded-full px-5 py-2 font-medium transition-colors duration-300 ${yearly === value ? "bg-umber text-on-umber" : "text-muted hover:text-text"}`}>{label as string}</button>
         ))}
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -30,7 +30,7 @@ export function PricingPlans() {
             <ul className="mt-6 flex-1 space-y-3 text-sm">
               {p.features.map((f) => <li key={f} className="flex gap-3"><Check size={17} aria-hidden className="mt-0.5 shrink-0 text-supported" />{f}</li>)}
             </ul>
-            <Link href="/signup" className="mt-8 rounded-full bg-umber py-3 text-center font-medium text-white transition hover:brightness-110">{p.monthly ? `Choose ${p.name}` : "Start free"}</Link>
+            <Link href="/register" className="mt-8 rounded-full bg-umber py-3 text-center font-medium text-on-umber transition hover:brightness-110">{p.monthly ? `Choose ${p.name}` : "Start free"}</Link>
           </div>
         ))}
       </div>

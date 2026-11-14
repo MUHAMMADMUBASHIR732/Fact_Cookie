@@ -4,8 +4,8 @@ import { Brand } from "@/components/Brand";
 
 const columns = [
   ["Product", [["How it works", "/#how"], ["Developers", "/#developers"], ["Principles", "/#principles"], ["Pricing", "/pricing"]]],
-  ["Resources", [["Docs", "/docs"], ["Connect your agent", "/connect"], ["Playground", "/try"]]],
-  ["Account", [["Log in", "/login"], ["Create account", "/signup"]]],
+  ["Resources", [["Docs", "/docs"], ["Connect your agent", "/connect"], ["Playground", "/verify"]]],
+  ["Account", [["Log in", "/login"], ["Create account", "/register"]]],
 ] as const;
 
 export function SiteFooter() {

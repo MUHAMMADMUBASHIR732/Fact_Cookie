@@ -1,43 +1,45 @@
-/* All colors live here. Palette: deep teal ink, slate, rose, plus the logo's cookie sand.
-   Token names are kept from the first version: --umber is now the PRIMARY action color (teal), --accent is rose (focus rings). */
+/* All colors live here. 60% cream, 30% brown, 10% baby blue.
+   Token names kept from v1: --umber = PRIMARY action color, --sand = the baby-blue accent. */
 :root {
-  --ink: #1c3334;
-  --slate: #2f4454;
-  --teal: #2f6566;
-  --rose: #da7b93;
-  --sand: #c3a78e;
-  --stone: #8d8a84;
-  --accent: var(--rose);
-  --umber: var(--teal);
+  --cream: #f2e8da;
+  --brown: #382418;
+  --sky: #8ec5ff;
+  --ink: var(--brown);
+  --sand: var(--sky);
+  --accent: var(--sky);
+  --umber: var(--brown);
+  --on-umber: var(--cream);
 
-  --bg: color-mix(in srgb, var(--sand) 10%, white);
-  --surface: color-mix(in srgb, var(--sand) 20%, white);
-  --raised: white;
-  --card: color-mix(in srgb, var(--sand) 32%, white);
-  --text: var(--ink);
-  --muted: color-mix(in srgb, var(--stone) 45%, var(--ink));
-  --line: color-mix(in srgb, var(--sand) 45%, white);
-  --link: var(--teal);
+  --bg: var(--cream);
+  --surface: color-mix(in srgb, var(--brown) 6%, var(--cream));
+  --raised: color-mix(in srgb, white 45%, var(--cream));
+  --card: color-mix(in srgb, var(--brown) 9%, var(--cream));
+  --text: var(--brown);
+  --muted: color-mix(in srgb, var(--brown) 62%, var(--cream));
+  --line: color-mix(in srgb, var(--brown) 16%, var(--cream));
+  --link: var(--brown);
 
   --v-supported: #2b6b52;
   --v-outdated: #9a6516;
   --v-contradicted: #b2415b;
-  --v-unverifiable: #5b6b78;
+  --v-unverifiable: #6b5a50;
 }
 /* .band = a section that is always dark, even in the light theme */
 .dark, .band {
-  --bg: color-mix(in srgb, var(--ink) 70%, black);
-  --surface: color-mix(in srgb, var(--ink) 90%, var(--sand));
-  --raised: color-mix(in srgb, var(--ink) 84%, var(--sand));
-  --card: color-mix(in srgb, var(--ink) 87%, var(--sand));
-  --text: color-mix(in srgb, var(--sand) 16%, white);
-  --muted: color-mix(in srgb, var(--stone) 70%, white);
-  --line: color-mix(in srgb, var(--ink) 70%, var(--sand));
-  --link: color-mix(in srgb, var(--teal) 45%, white);
-  --umber: #3f7f80;
+  --bg: color-mix(in srgb, var(--brown) 78%, black);
+  --surface: color-mix(in srgb, var(--brown) 92%, var(--cream));
+  --raised: var(--brown);
+  --card: color-mix(in srgb, var(--brown) 88%, var(--cream));
+  --text: var(--cream);
+  --muted: color-mix(in srgb, var(--cream) 62%, var(--brown));
+  --line: color-mix(in srgb, var(--cream) 16%, var(--brown));
+  --link: var(--sky);
+  --umber: var(--sky);
+  --on-umber: var(--brown);
 
-  --v-supported: #7fc4a8;
-  --v-outdated: #e0ad5c;
-  --v-contradicted: #ee8fa5;
-  --v-unverifiable: #9aa8b3;
+  --v-supported: #8fd1aa;
+  --v-outdated: #e6b566;
+  --v-contradicted: #f09aab;
+  --v-unverifiable: #bfb0a5;
 }
+::selection { background: var(--sky); color: var(--brown); }

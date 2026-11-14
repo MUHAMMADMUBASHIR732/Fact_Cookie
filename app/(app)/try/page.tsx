@@ -1,8 +1,6 @@
-// /try: the verifier (needs a logged-in user).
-import { Playground } from "@/components/app/Playground";
-
-export const metadata = { title: "Try it | Fact Cookie" };
+// Old playground route: the verifier now lives at /verify.
+import { redirect } from "next/navigation";
 
 export default function TryPage() {
-  return <Playground />;
+  redirect("/verify");
 }

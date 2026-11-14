@@ -13,8 +13,9 @@ async function authenticate(path: string, body: object): Promise<AuthResult> {
     return { ok: true };
   } catch (e) {
     if (e instanceof ApiError) {
-      if (e.status === 401) return { ok: false, reason: "invalid-credentials" };
-      if (e.status === 409) return { ok: false, reason: "exists" };
+      if (e.code === "invalid_credentials" || e.status === 401) return { ok: false, reason: "invalid-credentials" };
+      if (e.code === "email_taken" || e.status === 409) return { ok: false, reason: "exists" };
+      if (e.status === 429) return { ok: false, reason: "other", message: "Too many attempts. Wait a minute and try again." };
       return { ok: false, reason: "other", message: e.message };
     }
     return { ok: false, reason: "other", message: "Can't reach the server. Is the backend running?" };

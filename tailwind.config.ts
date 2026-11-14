@@ -9,7 +9,7 @@ const config: Config = {
     extend: {
       colors: {
         bg: v("bg"), surface: v("surface"), card: v("card"), raised: v("raised"), text: v("text"), muted: v("muted"),
-        line: v("line"), link: v("link"), accent: v("accent"), sand: v("sand"), umber: v("umber"),
+        line: v("line"), link: v("link"), accent: v("accent"), sand: v("sand"), umber: v("umber"), "on-umber": v("on-umber"),
         supported: v("v-supported"), outdated: v("v-outdated"),
         contradicted: v("v-contradicted"), unverifiable: v("v-unverifiable"),
       },

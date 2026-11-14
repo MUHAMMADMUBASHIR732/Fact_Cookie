@@ -13,7 +13,7 @@ export function CopyField({ label, value }: { label: string; value: string }) {
       <p className="text-sm font-medium">{label}</p>
       <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-line bg-bg py-1.5 pl-4 pr-1.5">
         <code className="min-w-0 flex-1 truncate font-mono text-sm">{value}</code>
-        <button onClick={copy} aria-label={`Copy ${label}`} className="grid size-9 shrink-0 place-items-center rounded-lg bg-umber text-white transition hover:brightness-110 active:scale-90">
+        <button onClick={copy} aria-label={`Copy ${label}`} className="grid size-9 shrink-0 place-items-center rounded-lg bg-umber text-on-umber transition hover:brightness-110 active:scale-90">
           {copied ? <Check size={16} /> : <Copy size={16} />}
         </button>
       </div>

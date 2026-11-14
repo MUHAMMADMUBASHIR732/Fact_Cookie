@@ -29,7 +29,7 @@ export function SiteHeader() {
           </nav>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Link href="/signup" className="hidden rounded-full bg-umber px-4 py-2 text-sm font-medium text-white transition hover:brightness-110 lg:inline-flex">
+            <Link href="/register" className="hidden rounded-full bg-umber px-4 py-2 text-sm font-medium text-on-umber transition hover:brightness-110 lg:inline-flex">
               Create account
             </Link>
             <button className="burger lg:hidden" aria-expanded={open} aria-controls="mobile-menu"
@@ -41,7 +41,7 @@ export function SiteHeader() {
 
         <div id="mobile-menu" className={`grid transition-[grid-template-rows] duration-300 ease-out lg:hidden ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
           <ul className="flex flex-col items-center gap-1 overflow-hidden px-4 text-center">
-            {[...links, ["Create account", "/signup"]].map(([label, href], i) => (
+            {[...links, ["Create account", "/register"]].map(([label, href], i) => (
               <li key={href} className={`w-full transition duration-300 ${open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
                 style={{ transitionDelay: open ? `${120 + i * 60}ms` : "0ms" }}>
                 <Link href={href} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}

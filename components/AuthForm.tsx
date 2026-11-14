@@ -29,7 +29,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   function handle(result: AuthResult, success: string) {
     setBusy(false);
-    if (result.ok) { setDoneText(success); return router.push("/try"); }
+    if (result.ok) { setDoneText(success); const next = new URLSearchParams(window.location.search).get("next"); return router.push(next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard"); }
     setNotice(result);
   }
 
@@ -84,7 +84,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             <p className="rise mt-1 text-sm text-muted" style={delay(140)}>{isSignup ? "Start checking AI answers in a minute." : "Log in to see your checks."}</p>
 
             {doneText ? (
-              <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Taking you to the verifier...</p>
+              <p role="status" className="mt-8 rounded-xl bg-surface p-4 text-sm">{doneText} Taking you to your dashboard...</p>
             ) : (
               <>
                 <button type="button" onClick={google} disabled={busy} style={delay(200)}
@@ -106,14 +106,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                       {notice.reason === "invalid-credentials" && "Incorrect email or password. "}
                       {notice.reason === "other" && notice.message}
                       {notice.reason !== "other" && (
-                        <Link href={notice.reason === "exists" ? "/login" : "/signup"} className="font-medium underline underline-offset-4">
+                        <Link href={notice.reason === "exists" ? "/login" : "/register"} className="font-medium underline underline-offset-4">
                           {notice.reason === "exists" ? "Log in instead" : "New here? Create an account"}
                         </Link>
                       )}
                     </p>
                   )}
                   <button disabled={busy} style={delay(420)}
-                    className="rise group flex w-full items-center justify-center gap-2 rounded-full bg-umber py-3.5 font-medium text-white transition hover:brightness-110 hover:shadow-lg disabled:opacity-60">
+                    className="rise group flex w-full items-center justify-center gap-2 rounded-full bg-umber py-3.5 font-medium text-on-umber transition hover:brightness-110 hover:shadow-lg disabled:opacity-60">
                     {busy ? "Please wait..." : isSignup ? "Create account" : "Log in"}
                     {!busy && <ArrowRight size={17} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />}
                   </button>
@@ -124,7 +124,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
           <p className="mt-6 text-center text-sm text-muted">
             {isSignup ? "Already have an account? " : "New here? "}
-            <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-text underline underline-offset-4">
+            <Link href={isSignup ? "/login" : "/register"} className="font-medium text-text underline underline-offset-4">
               {isSignup ? "Log in" : "Create an account"}
             </Link>
           </p>

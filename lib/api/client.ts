@@ -39,6 +39,7 @@ export async function api<T>(path: string, init: RequestInit = {}, canRetry = tr
 
   const res = await fetch(`${BASE}${path}`, { ...init, headers });
   if (res.status === 401 && canRetry && (await refresh())) return api<T>(path, init, false);
+  if (res.status === 401 && !path.startsWith("/api/v1/auth/")) { clearTokens(); window.location.assign("/login"); }
   if (!res.ok) {
     const body = await res.json().catch(() => null);
     throw new ApiError(res.status, body?.error?.code ?? "error", body?.error?.message ?? "Something went wrong.");

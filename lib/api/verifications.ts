@@ -3,7 +3,7 @@ import { api, ApiError } from "./client";
 import type { Verdict, Verification, VerificationStatus } from "./types";
 
 const SYNC_MAX_CHARS = 2000; // backend default; it switches to async by itself above this
-const running: VerificationStatus[] = ["pending", "queued", "running"];
+const running: VerificationStatus[] = ["pending", "running"];
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const getVerification = (id: string) => api<Verification>(`/api/v1/verifications/${id}`);

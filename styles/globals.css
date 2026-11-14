@@ -57,8 +57,8 @@
 
 /* Line above each step: a pen stroke that keeps travelling along it */
 .flow { display: block; position: relative; height: 2px; overflow: hidden; background: var(--line); }
-.flow::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 40%; background: var(--umber); animation: flow 3.2s cubic-bezier(.65,0,.35,1) infinite; animation-delay: var(--d, 0s); }
-.dark .flow::after { background: var(--sand); }
+.flow::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 40%; background: var(--accent); animation: flow 3.2s cubic-bezier(.65,0,.35,1) infinite; animation-delay: var(--d, 0s); }
+
 @keyframes flow { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -76,10 +76,10 @@
 
 .navlink { position: relative; color: var(--muted); transition: color 200ms; }
 .navlink::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--umber);
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--accent);
   transform: scaleX(0); transform-origin: left; transition: transform 300ms cubic-bezier(.16,1,.3,1);
 }
-.dark .navlink::after { background: var(--sand); }
+
 .navlink:hover { color: var(--text); }
 .navlink:hover::after { transform: scaleX(1); }
 
@@ -100,10 +100,10 @@
 /* ---------- login/signup: vertical lines with a segment sliding up and down ---------- */
 .vline { position: absolute; top: 12%; bottom: 12%; width: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
 .vline::after {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 30%; background: var(--umber);
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 30%; background: var(--accent);
   animation: vline 3.4s ease-in-out infinite alternate; animation-delay: var(--d, 0s);
 }
-.dark .vline::after { background: var(--sand); }
+
 @keyframes vline { to { transform: translateY(233%); } }
 @media (prefers-reduced-motion: reduce) { .vline::after { animation: none; height: 100%; } }
 

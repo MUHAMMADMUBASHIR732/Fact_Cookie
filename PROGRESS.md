@@ -10,10 +10,10 @@ Do `npm install`, then `npm run lint && npx tsc --noEmit && npm run build` and f
 - [~] 5. Pricing page (example plans, monthly/yearly) written
 - [~] 6. Auth: login + signup redesigned (back button, icon fields, show/hide, strength bar, staggered entrance); reset + connect-login todo
 - [~] 7. Real API layer done: lib/config.ts (env), client, auth, verifications, account (usage, billing, prefs, keys, docs, insights). App shell todo
-- [ ] 8. Dashboard overview
-- [ ] 9. Verification history
-- [ ] 10. Verification detail
-- [~] 11. Try it: Playground + ClaimCard wired to the real backend (sync + async polling). Needs real-backend test
+- [~] 8. /dashboard written (usage, verdicts, trend, recent)
+- [~] 9. /verifications history written
+- [~] 10. /verifications/[id] detail written (export JSON/CSV, delete, polling)
+- [~] 11. /verify (Playground) in app shell, real backend
 - [~] 12. Connect guide page written (no live connected status yet; needs backend)
 - [ ] 13. API keys and connector
 - [ ] 14. Documents
