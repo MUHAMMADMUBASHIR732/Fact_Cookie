@@ -6,6 +6,7 @@ import { VerdictMix, formatDate } from "@/components/app/VerdictMix";
 import { VerdictBadge } from "@/components/ui/VerdictBadge";
 import { getTrends, getUsage, getVerdictBreakdown } from "@/lib/api/account";
 import { ApiError } from "@/lib/api/client";
+import { densifyTrends } from "@/lib/format";
 import type { TrendPoint, Usage, Verdict, VerdictBreakdown, Verification } from "@/lib/api/types";
 import { listVerifications } from "@/lib/api/verifications";
 
@@ -29,7 +30,8 @@ export function Dashboard() {
   const { usage, recent, breakdown, trends } = data;
   const pct = usage.claims_limit ? Math.min(100, (usage.claims_used / usage.claims_limit) * 100) : 0;
   const total = verdicts.reduce((n, v) => n + (breakdown[v] ?? 0), 0);
-  const peak = Math.max(1, ...trends.map((t) => t.count));
+  const perDay = densifyTrends(trends, 30);
+  const peak = Math.max(1, ...perDay.map((t) => t.count));
 
   return (
     <div className="space-y-6">
@@ -51,9 +53,9 @@ export function Dashboard() {
       </div>
       <section className={card}>
         <h2 className="font-semibold">Checks per day, last 30 days</h2>
-        {trends.length === 0 ? <p className="mt-3 text-sm text-muted">Nothing yet.</p> : (
+        {perDay.every((t) => t.count === 0) ? <p className="mt-3 text-sm text-muted">Nothing yet.</p> : (
           <div className="mt-5 flex h-28 items-end gap-1" role="img" aria-label="Checks per day">
-            {trends.map((t) => <div key={t.date} title={`${t.date}: ${t.count}`} className="flex-1 rounded-t bg-umber" style={{ height: `${(t.count / peak) * 100}%`, minHeight: 4 }} />)}
+            {perDay.map((t) => <div key={t.date} title={`${t.date}: ${t.count}`} className="flex-1 rounded-t bg-umber" style={{ height: `${(t.count / peak) * 100}%`, minHeight: t.count > 0 ? 4 : 2 }} />)}
           </div>)}
       </section>
       <section className={card}>

@@ -6,7 +6,7 @@ import { VerdictBadge } from "@/components/ui/VerdictBadge";
 import { Card, EmptyState, ErrorPanel, PageHeader, Skeleton } from "@/components/ui/kit";
 import { useAsync } from "@/hooks/useAsync";
 import { getTopClaims, getTopDomains, getTrends, getVerdictBreakdown } from "@/lib/api/account";
-import { domainOf } from "@/lib/format";
+import { densifyTrends, domainOf } from "@/lib/format";
 
 export default function Insights() {
   const [days, setDays] = useState(30);
@@ -16,8 +16,9 @@ export default function Insights() {
   const domains = useAsync(() => getTopDomains(10));
 
   const total = verdicts.reduce((a, v) => a + (breakdown.data?.[v] ?? 0), 0);
-  const maxTrend = Math.max(1, ...(trends.data ?? []).map((p) => p.count));
-  const empty = breakdown.data && total === 0 && !trends.data?.some((p) => p.count > 0);
+  const perDay = densifyTrends(trends.data ?? [], days);
+  const maxTrend = Math.max(1, ...perDay.map((p) => p.count));
+  const empty = breakdown.data && total === 0 && perDay.every((p) => p.count === 0);
 
   return (
     <>
@@ -52,8 +53,8 @@ export default function Insights() {
           {trends.error && !trends.data ? <div className="mt-3"><ErrorPanel error={trends.error} onRetry={trends.reload} /></div> :
             !trends.data ? <Skeleton className="mt-3 h-40" /> : (
               <>
-                <svg role="img" aria-label={`Bar chart of daily counts over ${days} days`} viewBox={`0 0 ${Math.max(trends.data.length, 1) * 10} 100`} preserveAspectRatio="none" className="mt-4 h-40 w-full">
-                  {trends.data.map((p, i) => <rect key={p.date} x={i * 10 + 1} width={8} y={100 - (p.count / maxTrend) * 96} height={(p.count / maxTrend) * 96 || 0.5} rx={1} fill="var(--umber)"><title>{`${p.date}: ${p.count}`}</title></rect>)}
+                <svg role="img" aria-label={`Bar chart of daily counts over ${days} days`} viewBox={`0 0 ${perDay.length * 10} 100`} preserveAspectRatio="none" className="mt-4 h-40 w-full">
+                  {perDay.map((p, i) => <rect key={p.date} x={i * 10 + 1} width={8} y={100 - (p.count / maxTrend) * 96} height={(p.count / maxTrend) * 96 || 0.5} rx={1} fill="var(--umber)"><title>{`${p.date}: ${p.count}`}</title></rect>)}
                 </svg>
                 <details className="mt-2 text-xs text-muted"><summary className="cursor-pointer">View as table</summary>
                   <table className="mt-2 w-full text-left"><tbody>{trends.data.map((p) => <tr key={p.date}><td className="py-0.5">{p.date}</td><td className="text-right font-mono">{p.count}</td></tr>)}</tbody></table></details>

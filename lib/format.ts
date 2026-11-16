@@ -33,6 +33,22 @@ export function confidenceLabel(c: number) {
 export const planPrice = (cents: number, currency = "usd") =>
   cents === 0 ? "Free" : new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 0 }).format(cents / 100);
 
+/** Expands sparse trend points (only days with activity) into one point per day so per-day charts render real bars, not one stretched block. */
+export function densifyTrends(points: { date: string; count: number }[], days: number): { date: string; count: number }[] {
+  const byDate = new Map(points.map((p) => [p.date.slice(0, 10), p.count]));
+  const out: { date: string; count: number }[] = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    // Try the local key and the UTC key: the backend may label days in either zone.
+    const local = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const utc = d.toISOString().slice(0, 10);
+    out.push({ date: local, count: byDate.get(local) ?? byDate.get(utc) ?? 0 });
+  }
+  return out;
+}
+
 /** Turns any thrown error into a friendly message; `upgrade` tells the UI to show an upgrade CTA. */
 export function describeError(e: unknown): { message: string; upgrade: boolean; requestId?: string } {
   if (!(e instanceof ApiError)) return { message: "Something went wrong.", upgrade: false };
