@@ -35,4 +35,4 @@ export const getTopDomains = <T = { source_url: string; count: number }[]>(limit
 export const getVerdictBreakdown = <T = VerdictBreakdown>() => api<T>("/api/v1/insights/verdict-breakdown");
 export const getTrends = <T = TrendPoint[]>(days = 30) => api<T>(`/api/v1/insights/trends?days=${days}`);
 
-export const getHealth = <T = any>() => api<T>("/health"); // check the real path
+export const getHealth = <T = any>() => api<T>("/api/v1/health");

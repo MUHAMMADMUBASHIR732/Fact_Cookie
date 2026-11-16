@@ -4,7 +4,8 @@ import { Brand } from "@/components/Brand";
 
 const columns = [
   ["Product", [["How it works", "/#how"], ["Developers", "/#developers"], ["Principles", "/#principles"], ["Pricing", "/pricing"]]],
-  ["Resources", [["Docs", "/docs"], ["Connect your agent", "/connect"], ["Playground", "/verify"]]],
+  ["Resources", [["Docs", "/docs"], ["Verdict guide", "/docs#verdicts"], ["Connect your agent", "/connect"], ["Playground", "/verify"], ["Status", "/status"]]],
+  ["Company", [["About", "/about"], ["Support", "/support"], ["Contact", "/contact"]]],
   ["Account", [["Log in", "/login"], ["Create account", "/register"]]],
 ] as const;
 
@@ -13,7 +14,7 @@ export function SiteFooter() {
     <footer>
       <span className="flow mx-auto max-w-6xl" aria-hidden />
       <div className="scrub mx-auto max-w-6xl px-6 py-16">
-        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div className="grid gap-12 md:grid-cols-[1.6fr_repeat(4,1fr)]">
           <div>
             <Brand />
             <p className="mt-5 max-w-xs leading-relaxed text-muted">
@@ -32,7 +33,10 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-14 flex flex-col gap-3 border-t border-line pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Fact Cookie. Verify. Discover. Trust.</p>
+          <p>
+            © 2026 Fact Cookie · <Link href="/privacy" className="navlink">Privacy</Link> ·{" "}
+            <Link href="/terms" className="navlink">Terms</Link>
+          </p>
           <p>A claim with no reliable source is marked Unverifiable, never guessed.</p>
         </div>
       </div>

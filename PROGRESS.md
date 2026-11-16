@@ -21,7 +21,7 @@ Do `npm install`, then `npm run lint && npx tsc --noEmit && npm run build` and f
 - [ ] 16. Insights
 - [ ] 17. Billing and plans
 - [ ] 18. Account settings
-- [~] 19. Public Docs page written
+- [~] 19. Public Docs page written; public info pages from the demo frontend ported: /about, /support, /contact, /privacy, /terms (new components/marketing/InfoPage.tsx) + footer Company column and legal links
 - [ ] 20. Admin
 - [ ] 21. Error and empty states
 - [ ] 22. Final pass

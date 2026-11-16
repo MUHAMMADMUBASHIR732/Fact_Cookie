@@ -1,17 +1,29 @@
 // Signed-in frame: sidebar on desktop, top bar with scrolling nav on mobile, usage pill, log out, auth guard.
 "use client";
-import { History, LayoutDashboard, LogOut, ShieldCheck } from "lucide-react";
+import { CircleHelp, CreditCard, FileText, History, LayoutDashboard, LogOut, PieChart, Plug, Settings, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Brand } from "@/components/Brand";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { UsageMeter } from "@/components/ui/kit";
 import { getUsage } from "@/lib/api/account";
 import { logout } from "@/lib/api/auth";
 import { hasToken } from "@/lib/api/client";
 import type { Usage } from "@/lib/api/types";
 
-const nav = [["Dashboard", "/dashboard", LayoutDashboard], ["Verify", "/verify", ShieldCheck], ["History", "/verifications", History]] as const;
+const nav = [
+  ["Overview", "/dashboard", LayoutDashboard],
+  ["Try it", "/verify", ShieldCheck],
+  ["Verification history", "/verifications", History],
+  ["Insights", "/insights", PieChart],
+  ["Documents", "/documents", FileText],
+  ["Preferences", "/preferences", SlidersHorizontal],
+  ["API & connector", "/connectors", Plug],
+  ["Billing & plans", "/usage", CreditCard],
+  ["Account settings", "/settings", Settings],
+  ["Help", "/help", CircleHelp],
+] as const;
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -39,7 +51,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Brand size={32} />
         <nav className="mt-8 flex flex-col gap-1" aria-label="App">{links}</nav>
         <div className="mt-auto space-y-3 text-sm">
-          {usage && <p className="rounded-xl border border-line bg-bg p-3"><span className="font-medium">{usage.plan_name}</span><br /><span className="text-muted">{usage.claims_used} / {usage.claims_limit ?? "unlimited"} claims</span></p>}
+          {usage && (
+            <div className="rounded-xl border border-line bg-bg p-3">
+              <div className="flex items-center justify-between gap-2"><span className="font-medium">{usage.plan_name}</span><span className="text-xs text-muted">{usage.claims_used} / {usage.claims_limit ?? "∞"} claims</span></div>
+              <UsageMeter used={usage.claims_used} limit={usage.claims_limit} />
+              <Link href="/usage" className="mt-1 inline-block text-xs text-umber underline underline-offset-4">Upgrade plan</Link>
+            </div>
+          )}
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <button onClick={async () => { await logout(); router.replace("/login"); }} className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-line py-2 text-muted transition hover:text-text"><LogOut size={15} aria-hidden /> Log out</button>
