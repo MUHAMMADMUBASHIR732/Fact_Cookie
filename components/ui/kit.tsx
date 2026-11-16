@@ -96,16 +96,18 @@ export function ConfirmDialog({ open, title, text, confirmLabel, busy, onConfirm
   );
 }
 
-export function UsageMeter({ used, limit }: { used: number; limit: number | null }) {
+export function UsageMeter({ used, limit, compact = false }: { used: number; limit: number | null; compact?: boolean }) {
   const pct = limit ? Math.min(100, Math.round((used / limit) * 100)) : 0;
   return (
     <div>
-      <div className="flex items-baseline justify-between text-sm">
-        <span className="font-mono">{used.toLocaleString()} / {limit === null ? "unlimited" : limit.toLocaleString()} claims</span>
-        {limit !== null && <span className="text-muted">{pct}%</span>}
-      </div>
+      {!compact && (
+        <div className="flex items-baseline justify-between text-sm">
+          <span className="font-mono">{used.toLocaleString()} / {limit === null ? "unlimited" : limit.toLocaleString()} claims</span>
+          {limit !== null && <span className="text-muted">{pct}%</span>}
+        </div>
+      )}
       <div role="progressbar" aria-label="Claims used" aria-valuemin={0} aria-valuemax={limit ?? undefined} aria-valuenow={used}
-        className="mt-2 h-2 overflow-hidden rounded-full bg-surface">
+        className={compact ? "h-2 overflow-hidden rounded-full bg-raised" : "mt-2 h-2 overflow-hidden rounded-full bg-surface"}>
         <div className="h-full rounded-full" style={{ width: `${limit === null ? 0 : pct}%`, background: pct >= 90 ? "var(--v-contradicted)" : "var(--umber)" }} />
       </div>
     </div>

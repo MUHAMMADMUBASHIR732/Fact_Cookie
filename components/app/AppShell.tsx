@@ -48,13 +48,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[15rem_1fr]">
       <aside className="hidden border-r border-line bg-surface lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:p-5">
-        <Brand size={32} />
-        <nav className="mt-8 flex flex-col gap-1" aria-label="App">{links}</nav>
-        <div className="mt-auto space-y-3 text-sm">
+        <div className="shrink-0"><Brand size={32} /></div>
+        <nav className="mt-8 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="App">{links}</nav>
+        <div className="mt-4 shrink-0 space-y-3 text-sm">
           {usage && (
             <div className="rounded-xl border border-line bg-bg p-3">
               <div className="flex items-center justify-between gap-2"><span className="font-medium">{usage.plan_name}</span><span className="text-xs text-muted">{usage.claims_used} / {usage.claims_limit ?? "∞"} claims</span></div>
-              <UsageMeter used={usage.claims_used} limit={usage.claims_limit} />
+              <UsageMeter used={usage.claims_used} limit={usage.claims_limit} compact />
               <Link href="/usage" className="mt-1 inline-block text-xs text-umber underline underline-offset-4">Upgrade plan</Link>
             </div>
           )}
